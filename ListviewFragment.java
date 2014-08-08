@@ -1,23 +1,5 @@
 
 public class ListViewFragment extends Fragment{
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    private static final String ARG_SECTION_NUMBER = "section_number";
-    
-    
-    /**
-     * Returns a new instance of this fragment for the given section number.
-     */
-    public static ListViewFragment newInstance(int sectionNumber) {
-      ListViewFragment fragment = new ListViewFragment();
-      Bundle args = new Bundle();
-      args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-      fragment.setArguments(args);
-      return fragment;
-    }
-
     public ListViewFragment() {}
 
     @Override
@@ -31,9 +13,6 @@ public class ListViewFragment extends Fragment{
 
       return rootView;
     }
-    
-    
-    
     
     private class AppListAdapter extends BaseAdapter{
       private ArrayList<App> appList;
@@ -60,17 +39,20 @@ public class ListViewFragment extends Fragment{
         return position;
       }
       
-      //
       @Override
       public View getView(int position, View convertView, ViewGroup parent) {
         //Android会复用被初始化的listview item，且并不固定
-        Log.v("item "+ position + " null: ", "" + (convertView == null ? true : "from view "+((TextView)((ViewHolder)convertView.getTag()).getView(R.id.list_home_app_title)).getText()) );
+        Log.v("item "+ position + " null: ", "" + 
+          (convertView == null ? true : 
+            "from view "+ ((TextView)((ViewHolder)convertView.getTag()).getView(R.id.list_home_app_title)).getText())
+          );
         final App app = getItem(position);
         
         Log.v("app", app.name + (app.downloader == null ? " null" : " progress:" + app.downloader.getProgress()));
         ViewHolder holder = ViewHolder.newInstance(context, convertView, parent, resLine);
         
-        Picasso.with(context).load(app.icon).placeholder(R.drawable.ic_launcher).into((ImageView)holder.getView(R.id.list_home_app_icon));
+        Picasso.with(context).load(app.icon).placeholder(R.drawable.ic_launcher)
+          .into((ImageView)holder.getView(R.id.list_home_app_icon));
         ((TextView)holder.getView(R.id.list_home_app_title)).setText(app.name);
         
         final ProgressBar bar = holder.getView(R.id.list_home_app_progress);
@@ -105,7 +87,6 @@ public class ListViewFragment extends Fragment{
     }
 }
 
-
 class App{
   public String icon;
   public String name;
@@ -122,7 +103,6 @@ class App{
     downloads = _downloads;
     downloadUrl = _downloadUrl;
   }
-  
   
   public static ArrayList<App> list(){
     ArrayList<App> list = new ArrayList<App>();
@@ -147,7 +127,6 @@ class App{
     return true;
   }
 }
-
 
 class Downloader extends AsyncTask<String, Integer, String> {
   public final static int STATE_PENDING = 1;
